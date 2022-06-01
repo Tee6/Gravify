@@ -9,13 +9,11 @@ namespace Spotify
 {
     internal class Playlist
     {
-        [JsonIgnore]
-        public static int songcount = 0;
         public string PlaylistName { get; set; }
         public string Description { get; set; }
         public List<Song> Playlistsongs { get; set; }
 
-
+        /*
         public Playlist(string name)
         {
             PlaylistName = name;
@@ -28,11 +26,10 @@ namespace Spotify
             Description = desc;
             Playlistsongs = new List<Song>();
         }
-
+        */
         [JsonConstructor]
         public Playlist(string name, string desc, List<Song> songs)
         {
-            Playlistsongs = new List<Song>();
             PlaylistName = name;
             Description = desc;
             Playlistsongs = songs;
@@ -45,8 +42,6 @@ namespace Spotify
             if (s != null)
             {
                 Playlistsongs.Add(new Song(s.Name, s.Artist, s.Album, s.Time, s.Path));
-
-                songcount++;
             }
         }
     }

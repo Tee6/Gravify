@@ -39,12 +39,7 @@ namespace Spotify
             //geladene Songs laden wenn vorhanden
             //LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
             //LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
-            playlists.Add(new Playlist("sad songs"));
-            playlists.Add(new Playlist("happy songs"));
-            playlists.Add(new Playlist("wenamechaintesama"));
-            TimeSpan test = new TimeSpan(0, 2, 2);
-            Songs.Add(new Song("wenametchaindesama", "tomaharbesaun", "wifenloof", test, @"C:\"));
-            playlists[0].AddSongToPlaylist(Songs[0]);
+            List<Song> list = new List<Song>();
 
 
         }
@@ -247,26 +242,8 @@ namespace Spotify
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            //Banner.Children.Clear();
-            int i = 0;
-            foreach (Song item in playlists[2].Playlistsongs)
-            {
-                int top = 125 + (i * 80);
 
-                //Rechteck auf Canvas setzen
-                Rectangle r = new Rectangle();
-                r.Stroke = new SolidColorBrush(Colors.Black);
-                r.StrokeThickness = 3;
-                r.HorizontalAlignment = HorizontalAlignment.Stretch;
-                r.VerticalAlignment = VerticalAlignment.Stretch;
-                r.Fill = new SolidColorBrush(Colors.Gray);
-                r.Width = 995;
-                r.Height = 75;
-                Canvas.SetLeft(r, 262);
-                Canvas.SetTop(r, top);
-                Banner.Children.Add(r);
-                i++;*/
+            LoadPlaylistFromJson(@"C:\playlists.json");
             int i = 0;
             foreach (Playlist p in playlists)
             {

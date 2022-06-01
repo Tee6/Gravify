@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,45 +22,80 @@ namespace Spotify
     /// </summary>
     public partial class CreatePlaylist : Window
     {
-
-        internal List<Playlist> list = new List<Playlist>();
+        internal static List<Playlist> playlists;
         public CreatePlaylist()
         {
             InitializeComponent();
-
-            //list = LoadStudentsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
+            playlists = LoadSongsFromJson(@"C:\playlists.json");
 
         }
-        private static List<Playlist> LoadStudentsFromJson(string path)
+
+        static List<Playlist> LoadSongsFromJson(string path)
         {
-            List<Playlist> students = null;
-            // Load from file
-            using (StreamReader stream = new StreamReader(path))
-            {
-                string serializedData = stream.ReadToEnd();
-                // Deserialize the string into a student object
-                students = JsonSerializer.Deserialize<List<Playlist>>(serializedData);
-            }
-            return students;
+            //Pfad wird gesucht und Objekte aus dem JSON File werden in die Songs Liste übergeben
+            string json = File.ReadAllText(path);
+            playlists = JsonConvert.DeserializeObject<List<Playlist>>(json);
+            return playlists;
+
         }
 
-        public static void SaveJsonToFile(string jsonString, string path)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Open a new file stream to write into a text file
-            using (StreamWriter stream = new StreamWriter(path, append: false))
-            {
-                // Write the data to the file
-                stream.WriteLine(jsonString);
-            }
+            List<Song> playlist = new List<Song>();
+            playlists.Add(new Playlist(nameplayllist.Text, descrplaylist.Text, playlist));
+
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(playlists);
+            File.WriteAllText(@"C:\playlists.json", jsonString);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string name = nameplayllist.Text;
             string desc = descrplaylist.Text;
+            List<Song> playlistnull = new List<Song>();
 
-            list.Add(new Playlist(name, desc));
+            list.Add(new Playlist(name, desc, playlistnull));
             string json = JsonSerializer.Serialize(list);
             File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\playlists.json", json);
         }
+        */
     }
 }
