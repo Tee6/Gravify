@@ -12,27 +12,13 @@ namespace Spotify
         public string PlaylistName { get; set; }
         public string Description { get; set; }
         public List<Song> Playlistsongs { get; set; }
-
-        /*
-        public Playlist(string name)
-        {
-            PlaylistName = name;
-            Playlistsongs = new List<Song>();
-        }
-       
-        public Playlist(string name, string desc)
-        {
-            PlaylistName = name;
-            Description = desc;
-            Playlistsongs = new List<Song>();
-        }
-        */
-        [JsonConstructor]
-        public Playlist(string name, string desc, List<Song> songs)
+        public string PicPath { get; set; }
+        public Playlist(string name, string desc, List<Song> songs, string path)
         {
             PlaylistName = name;
             Description = desc;
             Playlistsongs = songs;
+            PicPath = path;
         }
 
 

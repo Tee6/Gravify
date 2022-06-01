@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,7 @@ namespace Spotify
             playlists = LoadSongsFromJson(@"C:\playlists.json");
 
         }
-
+        string picPath = "";
         static List<Playlist> LoadSongsFromJson(string path)
         {
             //Pfad wird gesucht und Objekte aus dem JSON File werden in die Songs Liste übergeben
@@ -41,61 +42,36 @@ namespace Spotify
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string name = nameplaylist.Text;
+            string desc = descrplaylist.Text;
+
             List<Song> playlist = new List<Song>();
-            playlists.Add(new Playlist(nameplayllist.Text, descrplaylist.Text, playlist));
+            playlists.Add(new Playlist(name,desc, playlist, picPath));
 
             string jsonString = System.Text.Json.JsonSerializer.Serialize(playlists);
             File.WriteAllText(@"C:\playlists.json", jsonString);
+
+
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void nameplaylist_Click(object sender, EventArgs e)
         {
-            string name = nameplayllist.Text;
-            string desc = descrplaylist.Text;
-            List<Song> playlistnull = new List<Song>();
-
-            list.Add(new Playlist(name, desc, playlistnull));
-            string json = JsonSerializer.Serialize(list);
-            File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\playlists.json", json);
+            nameplaylist.Clear();
         }
-        */
+
+        private void descrplaylist_Click(object sender, EventArgs e)
+        {
+            descrplaylist.Clear();
+        }
+
+        private void ImportPic_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            if (op.ShowDialog() == true)
+            {
+                icon.Source = new BitmapImage(new Uri(op.FileName));
+            }
+            icon.Width = 185;
+            CanvasPic.OpacityMask = Brushes.Black;
+        }
     }
 }
