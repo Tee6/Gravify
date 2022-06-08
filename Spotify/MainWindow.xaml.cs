@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -35,11 +36,8 @@ namespace Spotify
         {
             //XAML Einbinden
             InitializeComponent();
-
-            //geladene Songs laden wenn vorhanden
-            //LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
-            //LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
-            List<Song> list = new List<Song>();
+            LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
+            LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
 
 
         }
@@ -72,10 +70,10 @@ namespace Spotify
                 {
                     TagLib.File f = TagLib.File.Create(openFileDialog.FileNames[k]); //Filename gibt pfad mit f.Tag.Album krigt ma album name
                     Songs.Add(new Song(f.Tag.Title, f.Tag.FirstAlbumArtist, f.Tag.Album, f.Properties.Duration, openFileDialog.FileName));
-
+                    string tests = f.Tag.Title;
                     //Songs Liste wird in JSON gespeichert.
                     string json = JsonSerializer.Serialize(Songs);
-                    File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\3CHELhome\FSST\2. Semester\emomullet\Spotify\Spotify\bin\Debug\Songs.json", json);
+                    File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json", json);
                     k++;
                 }
             }
@@ -171,6 +169,24 @@ namespace Spotify
             Canvas.SetLeft(b, 1201);
             Canvas.SetTop(b, top+20);
             Banner.Children.Add(b);
+
+            Button p = new Button();
+            p.FontSize = 22;
+            p.Content = "Play";
+            p.Name = songtitle.Replace(" ", "_");
+            p.Click += PlayButton_Click;
+            Canvas.SetLeft(p, 1101);
+            Canvas.SetTop(p, top + 20);
+            Banner.Children.Add(p);
+
+        }
+
+        public void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            string sonname = (sender as Button).Name.Replace("_"," ");
+            mediaElement1.LoadedBehavior = MediaState.Manual;
+            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + sonname + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Play();
         }
 
         public void Menubutton_Click(object sender, RoutedEventArgs e)
@@ -243,16 +259,23 @@ namespace Spotify
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
 
-            LoadPlaylistFromJson(@"C:\playlists.json");
+            LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
+
             int i = 0;
+            int top = 150;
             foreach (Playlist p in playlists)
             {
+                if (i >= 5)
+                {
+                    i = 0;
+                    top += 30;
+                }
                 int left= 300 + (i * 150);
                 Button b = new Button();
                 b.Content = p.PlaylistName;
                 b.Name = p.PlaylistName.Replace(" ","");
                 b.Click += ShowPlaylist;
-                Canvas.SetTop(b,150);
+                Canvas.SetTop(b,top);
                 Canvas.SetLeft(b, left);
                 Banner.Children.Add(b);
                 i++;

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Spotify"
         mc:Ignorable="d"
         Title="Spotify" Width="1300" Height="700" ResizeMode="NoResize">
-    
-        <Canvas x:Name="Banner" Background="#FF343434">
+
+    <Canvas x:Name="Banner" Background="#FF343434">
 
         <Rectangle Fill="#FF1A1A1A" StrokeThickness="5" Stroke="Black" Height="684" Width="246"/>
         <Rectangle Fill="#FF1A1A1A" Stroke="Black" StrokeThickness="5" Height="103" Width="1300"/>
@@ -17,6 +17,9 @@
         <Button x:Name="CreatePlaylist" Content="Playlist erstellen" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="24" Canvas.Left="40" Canvas.Top="184" Click="CreatePlaylist_Click"/>
         <Ellipse Stroke="Black" Margin="959,18,27,15" StrokeThickness="5"/>
         <Button x:Name="LoadSongs" Content="Songs Laden" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" RenderTransformOrigin="0.53,-0.35" Click="LoadSongs_Click" Canvas.Left="282" Canvas.Top="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <MediaElement x:Name="mediaElement1" Height="100" Width="134" Canvas.Left="447" Canvas.Top="170" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
 
     </Canvas>
 </Window>
