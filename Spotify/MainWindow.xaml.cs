@@ -42,6 +42,8 @@ namespace Spotify
 
 
         }
+        #region LoadJson
+
         public void LoadPlaylistFromJson(string path)
         {
             playlists = JsonConvert.DeserializeObject<List<Playlist>>(File.ReadAllText(path));
@@ -54,6 +56,8 @@ namespace Spotify
                 Songs = JsonConvert.DeserializeObject<List<Song>>(json);
 
         }
+
+        #endregion LoadJson
 
         #region Songs
 
@@ -134,7 +138,7 @@ namespace Spotify
             songname.Margin = new Thickness(10, 10, 144, 519);
             songname.FontSize = 22;
             songname.Content = songtitle;
-            songname.Uid = "Songla" + a;
+            songname.Uid = "Song" + a;
             Canvas.SetLeft(songname, 262);
             Canvas.SetTop(songname, top-5);
             Banner.Children.Add(songname);
@@ -144,7 +148,7 @@ namespace Spotify
             songartist.Margin = new Thickness(36, 35, 118, 494);
             songartist.FontSize = 22;
             songartist.Content = artist;
-            songartist.Uid = "Songa" + a;
+            songartist.Uid = "Song" + a;
             Canvas.SetLeft(songartist, 262);
             Canvas.SetTop(songartist, top-5);
             Banner.Children.Add(songartist);
@@ -154,7 +158,7 @@ namespace Spotify
             Label songalbum = new Label();
             songalbum.FontSize = 22;
             songalbum.Content = album;
-            songalbum.Uid = "Songal" + a;
+            songalbum.Uid = "Song" + a;
             Canvas.SetLeft(songalbum, 800);
             Canvas.SetTop(songalbum, top + 15);
             Banner.Children.Add(songalbum);
@@ -163,7 +167,7 @@ namespace Spotify
             //Songlänge Label
             Label songtime = new Label();
             songtime.FontSize = 22;
-            songtime.Uid = "Songt" + a;
+            songtime.Uid = "Song" + a;
 
                     //time.Totalseconds = 300.2 
                     //schot hässlich us also oamol modulo 60 zum da rest krriga und oamol durch 60 zum die minuten zum kriga
@@ -191,7 +195,7 @@ namespace Spotify
             b.Content = "...";
             b.Name = songtitle.Replace(" ", "");
             b.Click += Menubutton_Click;
-            b.Uid = "Songmenu" + a;
+            b.Uid = "Song" + a;
             Canvas.SetLeft(b, 1201);
             Canvas.SetTop(b, top+20);
             Banner.Children.Add(b);
@@ -351,7 +355,7 @@ namespace Spotify
             Playlisttitle.Content = playli.PlaylistName;
             Playlisttitle.FontSize = 30;
             Playlisttitle.Foreground = Brushes.White;
-            Playlisttitle.Uid = "Playlistti" + b;
+            Playlisttitle.Uid = "Playlist" + b;
             Canvas.SetTop(Playlisttitle,200);
             Canvas.SetLeft(Playlisttitle,300);
             Banner.Children.Add(Playlisttitle);
@@ -361,7 +365,7 @@ namespace Spotify
             describtion.Content = playli.Description;
             describtion.FontSize = 30;
             describtion.Foreground = Brushes.White;
-            describtion.Uid = "Playlistdes" + b;
+            describtion.Uid = "Playlist" + b;
             Canvas.SetTop(describtion,300);
             Canvas.SetLeft(describtion, 300);
             Banner.Children.Add(describtion);
@@ -377,7 +381,7 @@ namespace Spotify
             }
             Cover.Width = mult * 185;
             Cover.Height = mult * 104;
-            Cover.Uid = "PlaylistCo" + b;
+            Cover.Uid = "Playlist" + b;
             Canvas.SetTop(Cover, 150);
             Canvas.SetLeft(Cover, 800);
             Banner.Children.Add(Cover);
