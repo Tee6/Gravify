@@ -40,6 +40,7 @@ namespace Spotify
             LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
 
 
+
         }
         public void LoadPlaylistFromJson(string path)
         {
@@ -86,6 +87,7 @@ namespace Spotify
             foreach (Song s in Songs)
             {
                 CreateSongBox(s.Name, s.Artist,s.Album, s.Time, j);
+                s.focus = false;
                 j++;
             }
         }
@@ -209,11 +211,7 @@ namespace Spotify
                     Canvas.SetLeft(AddtoPlaylistbutton, 300);
                     Canvas.SetTop(AddtoPlaylistbutton, 300);
                     Banner.Children.Add(AddtoPlaylistbutton);
-                    if ((sender as Button).Name == focusedname)
-                    {
-                        var son = Songs.Where(Song => Song.Name.Replace(" ","") == focusedname).FirstOrDefault();
-                        son.focus = true;
-                    }
+                    s.focus = true;
                 }
             }
         }
@@ -241,10 +239,10 @@ namespace Spotify
             {
                 if ((sender as Button).Content.ToString() == p.PlaylistName)
                 {
-                    var son = Songs.Where(Song => Song.focus == true).FirstOrDefault();
-                    p.AddSongToPlaylist(son);
 
-                    //mach dass die Buttons wieder verschwinden
+                    p.AddSongToPlaylist(Songs.Where(S => S.focus == true).FirstOrDefault());
+                    p.SaveSongs();
+                    //mach dass die Buttons wieder verschwinden @nick
                 }
             }
 
@@ -258,13 +256,14 @@ namespace Spotify
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-
             LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
+
 
             int i = 0;
             int top = 150;
             foreach (Playlist p in playlists)
             {
+                p.LoadSongs();
                 if (i >= 5)
                 {
                     i = 0;
@@ -284,10 +283,6 @@ namespace Spotify
 
         public void ShowPlaylist(object sender, RoutedEventArgs e)
         {
-            //Banner.Clear();
-            //des macht nick
-            //basically CreateSongBpx();
-
             string playname = (sender as Button).Content.ToString();
 
             var playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();

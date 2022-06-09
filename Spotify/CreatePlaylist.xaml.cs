@@ -23,7 +23,7 @@ namespace Spotify
     /// </summary>
     public partial class CreatePlaylist : Window
     {
-        internal static List<Playlist> playlists;
+        internal static List<Playlist> playlists = new List<Playlist>();
         static string jsonpath = @"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json";
 
         public CreatePlaylist()
@@ -32,7 +32,7 @@ namespace Spotify
             playlists = LoadSongsFromJson(jsonpath);
 
         }
-        string picPath = "";
+        static string picPath = "";
         static List<Playlist> LoadSongsFromJson(string path)
         {
             //Pfad wird gesucht und Objekte aus dem JSON File werden in die Songs Liste übergeben
@@ -53,6 +53,8 @@ namespace Spotify
             string jsonString = System.Text.Json.JsonSerializer.Serialize(playlists);
             File.WriteAllText(jsonpath, jsonString);
 
+            Playlist p = playlists.Where(pl => pl.PlaylistName == name).FirstOrDefault();
+            p.SaveSongs();
 
         }
         private void nameplaylist_Click(object sender, EventArgs e)
