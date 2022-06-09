@@ -76,6 +76,7 @@ namespace Spotify
             }
             icon.Width = 185;
             CanvasPic.OpacityMask = Brushes.Black;
+            picPath = op.FileName;
         }
     }
 }

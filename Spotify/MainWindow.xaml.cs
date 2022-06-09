@@ -55,6 +55,8 @@ namespace Spotify
 
         }
 
+        #region Songs
+
         private void LoadSongs_Click(object sender, RoutedEventArgs e)
         {
             int k = 0;
@@ -91,7 +93,9 @@ namespace Spotify
                 j++;
             }
         }
+        #endregion Songs
 
+        #region WPF und Buttons
         public void CreateSongBox(string songtitle, string artist,string album, TimeSpan time, int i)
         {
             //i: nr des Songs und multiplikator für den Abstand zu Top damit immer 80 abstand herrscht.
@@ -248,6 +252,10 @@ namespace Spotify
 
         }
 
+        #endregion WPF und Buttons
+
+        #region Playlists 
+
         private void CreatePlaylist_Click(object sender, RoutedEventArgs e)
         {
             CreatePlaylist c = new CreatePlaylist();
@@ -285,8 +293,36 @@ namespace Spotify
         {
             string playname = (sender as Button).Content.ToString();
 
-            var playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();
-            int k = 0;
+            Playlist playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();
+
+            Label Playlisttitle = new Label();
+            Playlisttitle.Content = playli.PlaylistName;
+            Playlisttitle.FontSize = 30;
+            Playlisttitle.Foreground = Brushes.White;
+            Canvas.SetTop(Playlisttitle,200);
+            Canvas.SetLeft(Playlisttitle,300);
+            Banner.Children.Add(Playlisttitle);
+
+            //Desc
+            Label describtion = new Label();
+            describtion.Content = playli.Description;
+            describtion.FontSize = 30;
+            describtion.Foreground = Brushes.White;
+            Canvas.SetTop(describtion,300);
+            Canvas.SetLeft(describtion, 300);
+            Banner.Children.Add(describtion);
+
+            int mult = 2;
+            Image Cover = new Image();
+            Cover.Source = new BitmapImage(new Uri(playli.PicPath));
+            Cover.Width = mult * 185;
+            Cover.Height = mult * 104;
+            Canvas.SetTop(Cover, 150);
+            Canvas.SetLeft(Cover, 800);
+            Banner.Children.Add(Cover);
+
+
+            int k = 3;
             foreach (Playlist p in playlists)
             {
                 if (playli.PlaylistName == p.PlaylistName)
@@ -299,5 +335,7 @@ namespace Spotify
                 }
             }
         }
+
+        #endregion Playlists
     }
 }
