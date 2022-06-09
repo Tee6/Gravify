@@ -84,7 +84,20 @@ namespace Spotify
 
         private void Allsongs_Click(object sender, RoutedEventArgs e)
         {
-            //Banner.Children.Clear();
+
+            List<UIElement> itemstoremove = new List<UIElement>();
+            foreach (UIElement ui in Banner.Children)
+            {
+                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist"))
+                {
+                    itemstoremove.Add(ui);
+                }
+            }
+            foreach (UIElement ui in itemstoremove)
+            {
+                Banner.Children.Remove(ui);
+            }
+
             int j = 0;
             foreach (Song s in Songs)
             {
@@ -100,6 +113,7 @@ namespace Spotify
         {
             //i: nr des Songs und multiplikator für den Abstand zu Top damit immer 80 abstand herrscht.
             int top = 125 + (i * 80);
+            int a = 1;
 
             //Rechteck auf Canvas setzen
             Rectangle r = new Rectangle();
@@ -110,6 +124,7 @@ namespace Spotify
             r.Fill = new SolidColorBrush(Colors.Gray);
             r.Width = 995;
             r.Height = 75;
+            r.Uid = "Song" + a;
             Canvas.SetLeft(r, 262);
             Canvas.SetTop(r, top);
             Banner.Children.Add(r);
@@ -119,6 +134,7 @@ namespace Spotify
             songname.Margin = new Thickness(10, 10, 144, 519);
             songname.FontSize = 22;
             songname.Content = songtitle;
+            songname.Uid = "Songla" + a;
             Canvas.SetLeft(songname, 262);
             Canvas.SetTop(songname, top-5);
             Banner.Children.Add(songname);
@@ -128,6 +144,7 @@ namespace Spotify
             songartist.Margin = new Thickness(36, 35, 118, 494);
             songartist.FontSize = 22;
             songartist.Content = artist;
+            songartist.Uid = "Songa" + a;
             Canvas.SetLeft(songartist, 262);
             Canvas.SetTop(songartist, top-5);
             Banner.Children.Add(songartist);
@@ -137,6 +154,7 @@ namespace Spotify
             Label songalbum = new Label();
             songalbum.FontSize = 22;
             songalbum.Content = album;
+            songalbum.Uid = "Songal" + a;
             Canvas.SetLeft(songalbum, 800);
             Canvas.SetTop(songalbum, top + 15);
             Banner.Children.Add(songalbum);
@@ -145,6 +163,7 @@ namespace Spotify
             //Songlänge Label
             Label songtime = new Label();
             songtime.FontSize = 22;
+            songtime.Uid = "Songt" + a;
 
                     //time.Totalseconds = 300.2 
                     //schot hässlich us also oamol modulo 60 zum da rest krriga und oamol durch 60 zum die minuten zum kriga
@@ -172,6 +191,7 @@ namespace Spotify
             b.Content = "...";
             b.Name = songtitle.Replace(" ", "");
             b.Click += Menubutton_Click;
+            b.Uid = "Songmenu" + a;
             Canvas.SetLeft(b, 1201);
             Canvas.SetTop(b, top+20);
             Banner.Children.Add(b);
@@ -181,6 +201,7 @@ namespace Spotify
             p.Content = "Play";
             p.Name = songtitle.Replace(" ", "_");
             p.Click += PlayButton_Click;
+            p.Uid = "Songplay" + a;
             Canvas.SetLeft(p, 1101);
             Canvas.SetTop(p, top + 20);
             Banner.Children.Add(p);
@@ -267,8 +288,22 @@ namespace Spotify
             LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
 
 
+            List<UIElement> itemstoremove = new List<UIElement>();
+            foreach (UIElement ui in Banner.Children)
+            {
+                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist"))
+                {
+                    itemstoremove.Add(ui);
+                }
+            }
+            foreach (UIElement ui in itemstoremove)
+            {
+                Banner.Children.Remove(ui);
+            }
+
             int i = 0;
             int top = 150;
+            int c = 0;
             foreach (Playlist p in playlists)
             {
                 p.LoadSongs();
@@ -282,23 +317,41 @@ namespace Spotify
                 b.Content = p.PlaylistName;
                 b.Name = p.PlaylistName.Replace(" ","");
                 b.Click += ShowPlaylist;
+                b.Uid = "Play" + c;
                 Canvas.SetTop(b,top);
                 Canvas.SetLeft(b, left);
                 Banner.Children.Add(b);
                 i++;
+                c++;
             }
         }
 
         public void ShowPlaylist(object sender, RoutedEventArgs e)
         {
+
+            List<UIElement> itemstoremove = new List<UIElement>();
+            foreach (UIElement ui in Banner.Children)
+            {
+                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist"))
+                {
+                    itemstoremove.Add(ui);
+                }
+            }
+            foreach (UIElement ui in itemstoremove)
+            {
+                Banner.Children.Remove(ui);
+            }
+
             string playname = (sender as Button).Content.ToString();
 
             Playlist playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();
 
+            int b = 0;
             Label Playlisttitle = new Label();
             Playlisttitle.Content = playli.PlaylistName;
             Playlisttitle.FontSize = 30;
             Playlisttitle.Foreground = Brushes.White;
+            Playlisttitle.Uid = "Playlistti" + b;
             Canvas.SetTop(Playlisttitle,200);
             Canvas.SetLeft(Playlisttitle,300);
             Banner.Children.Add(Playlisttitle);
@@ -308,15 +361,23 @@ namespace Spotify
             describtion.Content = playli.Description;
             describtion.FontSize = 30;
             describtion.Foreground = Brushes.White;
+            describtion.Uid = "Playlistdes" + b;
             Canvas.SetTop(describtion,300);
             Canvas.SetLeft(describtion, 300);
             Banner.Children.Add(describtion);
 
             int mult = 2;
             Image Cover = new Image();
-            Cover.Source = new BitmapImage(new Uri(playli.PicPath));
+            try
+            {
+                Cover.Source = new BitmapImage(new Uri(playli.PicPath));
+            }
+            catch (Exception)
+            {
+            }
             Cover.Width = mult * 185;
             Cover.Height = mult * 104;
+            Cover.Uid = "PlaylistCo" + b;
             Canvas.SetTop(Cover, 150);
             Canvas.SetLeft(Cover, 800);
             Banner.Children.Add(Cover);
