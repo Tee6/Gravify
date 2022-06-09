@@ -36,6 +36,8 @@ namespace Spotify
         {
             //XAML Einbinden
             InitializeComponent();
+
+            // Loading in Json Files
             LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
             LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
 
@@ -43,7 +45,7 @@ namespace Spotify
 
         }
         #region LoadJson
-
+        //Funktionen für Json Files
         public void LoadPlaylistFromJson(string path)
         {
             playlists = JsonConvert.DeserializeObject<List<Playlist>>(File.ReadAllText(path));
@@ -78,6 +80,7 @@ namespace Spotify
                     TagLib.File f = TagLib.File.Create(openFileDialog.FileNames[k]); //Filename gibt pfad mit f.Tag.Album krigt ma album name
                     Songs.Add(new Song(f.Tag.Title, f.Tag.FirstAlbumArtist, f.Tag.Album, f.Properties.Duration, openFileDialog.FileName));
                     string tests = f.Tag.Title;
+
                     //Songs Liste wird in JSON gespeichert.
                     string json = JsonSerializer.Serialize(Songs);
                     File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json", json);
@@ -88,7 +91,7 @@ namespace Spotify
 
         private void Allsongs_Click(object sender, RoutedEventArgs e)
         {
-
+            //Löscht alle WPF Elemente bevor neue gezeichnet werden
             List<UIElement> itemstoremove = new List<UIElement>();
             foreach (UIElement ui in Banner.Children)
             {
@@ -102,6 +105,7 @@ namespace Spotify
                 Banner.Children.Remove(ui);
             }
 
+            //SongBoxen zeichnen
             int j = 0;
             foreach (Song s in Songs)
             {
@@ -190,6 +194,8 @@ namespace Spotify
             Canvas.SetTop(songtime, top+15);
             Banner.Children.Add(songtime);
 
+
+            //Menu Button für Playlist Add und Song delete
             Button b = new Button();
             b.FontSize = 22;
             b.Content = "...";
@@ -214,6 +220,7 @@ namespace Spotify
 
         public void PlayButton_Click(object sender, RoutedEventArgs e)
         {
+            //Songs abspielen
             string sonname = (sender as Button).Name.Replace("_"," ");
             mediaElement1.LoadedBehavior = MediaState.Manual;
             mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + sonname + ".mp3", UriKind.RelativeOrAbsolute);
@@ -222,6 +229,9 @@ namespace Spotify
 
         public void Menubutton_Click(object sender, RoutedEventArgs e)
         {
+
+            //Menubutton Links von Songbox öffnet 2 neue Buttons
+
             var top = Canvas.GetTop(sender as Button);
             focusedname = (sender as Button).Name;
 
@@ -247,6 +257,7 @@ namespace Spotify
 
         public void ShowPlaylistsmenu(object sender, RoutedEventArgs e)
         {
+            //AddPlaylist Menu zeigt alle Playlists
             int k = 0;
             foreach(Playlist p in playlists)
             {
@@ -264,6 +275,9 @@ namespace Spotify
 
         public void AddToPlaylist_Click(object sender, RoutedEventArgs e)
         {
+
+            //Fügt song zu Playlist hinzu
+
             foreach (Playlist p in playlists)
             {
                 if ((sender as Button).Content.ToString() == p.PlaylistName)
@@ -283,14 +297,17 @@ namespace Spotify
 
         private void CreatePlaylist_Click(object sender, RoutedEventArgs e)
         {
+            //Öffnet Playlist erstellen fenster
             CreatePlaylist c = new CreatePlaylist();
             c.Show();
         }
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
+            //Load Playlists
             LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
 
+            //Alle Elemente Löschen
 
             List<UIElement> itemstoremove = new List<UIElement>();
             foreach (UIElement ui in Banner.Children)
@@ -304,6 +321,8 @@ namespace Spotify
             {
                 Banner.Children.Remove(ui);
             }
+
+            //Für jede Playlist ein Button
 
             int i = 0;
             int top = 150;
@@ -332,6 +351,7 @@ namespace Spotify
 
         public void ShowPlaylist(object sender, RoutedEventArgs e)
         {
+            //Unerwünschte Elemente löschen
 
             List<UIElement> itemstoremove = new List<UIElement>();
             foreach (UIElement ui in Banner.Children)
@@ -349,6 +369,8 @@ namespace Spotify
             string playname = (sender as Button).Content.ToString();
 
             Playlist playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();
+
+            //Songs in Playlist anzeigen
 
             int b = 0;
             Label Playlisttitle = new Label();
