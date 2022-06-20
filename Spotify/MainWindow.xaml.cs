@@ -32,6 +32,8 @@ namespace Spotify
         internal static string currentlyPlaying;
         internal static TimeSpan currenttime;
         internal static string selectedpath = "Bibliothek";
+        internal string datapath = @"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\";
+        internal string librarypath = @"C:\Users\nikol\Music\";
 
         //internal static bool focus;
         internal static string focusedname;
@@ -44,8 +46,8 @@ namespace Spotify
             mediaElement1.LoadedBehavior = MediaState.Manual;
 
             // Loading in Json Files
-            LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
-            LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
+            LoadPlaylistFromJson(datapath + "playlists.json");
+            LoadSongsFromJson(datapath + "Songs.json");
 
             Banner.Height = Songs.Count * 95;
             leftrectangle.Height = Banner.Height;
@@ -53,9 +55,9 @@ namespace Spotify
 
             foreach (Playlist p in playlists)
                 {
-                    if (File.Exists(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + p.PlaylistName + ".json"))
+                    if (File.Exists(datapath + p.PlaylistName + ".json"))
                     {
-                        string json = File.ReadAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + p.PlaylistName + ".json");
+                        string json = File.ReadAllText(datapath + p.PlaylistName + ".json");
                     p.Sev(json);
                     }
                 }
@@ -100,7 +102,7 @@ namespace Spotify
 
                     //Songs Liste wird in JSON gespeichert.
                     string json = JsonSerializer.Serialize(Songs);
-                    File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json", json);
+                    File.WriteAllText(datapath + "Songs.json", json);
                     k++;
                 }
             }
@@ -251,7 +253,7 @@ namespace Spotify
             pausebuttonimage.Visibility = Visibility.Visible;
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
             mediaElement1.Play();
         }
 
@@ -354,7 +356,7 @@ namespace Spotify
             pausebuttonimage.Visibility = Visibility.Visible;
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
 
             mediaElement1.Play();
 
@@ -369,7 +371,7 @@ namespace Spotify
             pausebuttonimage.Visibility = Visibility.Visible;
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
 
             mediaElement1.Play();
 
@@ -449,7 +451,7 @@ namespace Spotify
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             //Load Playlists
-            LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
+            LoadPlaylistFromJson(datapath + "playlists.json");
 
             //Alle Elemente Löschen
 
