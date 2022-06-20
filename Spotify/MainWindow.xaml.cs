@@ -29,6 +29,9 @@ namespace Spotify
         internal static List<Song> Songs = new List<Song>();
 
         internal static List<Playlist> playlists = new List<Playlist>();
+        internal static string currentlyPlaying;
+        internal static TimeSpan currenttime;
+        internal static string selectedpath = "Bibliothek";
 
         //internal static bool focus;
         internal static string focusedname;
@@ -37,11 +40,25 @@ namespace Spotify
             //XAML Einbinden
             InitializeComponent();
 
+
+            mediaElement1.LoadedBehavior = MediaState.Manual;
+
             // Loading in Json Files
             LoadPlaylistFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json");
             LoadSongsFromJson(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\Songs.json");
 
+            Banner.Height = Songs.Count * 95;
+            leftrectangle.Height = Banner.Height;
+            Scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
 
+            foreach (Playlist p in playlists)
+                {
+                    if (File.Exists(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + p.PlaylistName + ".json"))
+                    {
+                        string json = File.ReadAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + p.PlaylistName + ".json");
+                    p.Sev(json);
+                    }
+                }
 
         }
         #region LoadJson
@@ -91,11 +108,17 @@ namespace Spotify
 
         private void Allsongs_Click(object sender, RoutedEventArgs e)
         {
+            Scrollbar.Visibility = Visibility.Visible;
+            selectedpath = "Bibliothek";
+            Banner.Height = Songs.Count * 95;
+            leftrectangle.Height = Banner.Height;
+            Scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+
             //Löscht alle WPF Elemente bevor neue gezeichnet werden
             List<UIElement> itemstoremove = new List<UIElement>();
             foreach (UIElement ui in Banner.Children)
             {
-                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist"))
+                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist") || ui.Uid.StartsWith("Menu"))
                 {
                     itemstoremove.Add(ui);
                 }
@@ -221,18 +244,40 @@ namespace Spotify
         public void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             //Songs abspielen
-            string sonname = (sender as Button).Name.Replace("_"," ");
+            currentlyPlaying = (sender as Button).Name.Replace("_"," ");
+            currenttime = TimeSpan.Zero;
+
+            playbuttonimage.Visibility = Visibility.Hidden;
+            pausebuttonimage.Visibility = Visibility.Visible;
+
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + sonname + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
             mediaElement1.Play();
         }
+
+        
 
         public void Menubutton_Click(object sender, RoutedEventArgs e)
         {
 
+            List<UIElement> itemstoremove = new List<UIElement>();
+            foreach (UIElement ui in Banner.Children)
+            {
+                if (ui.Uid.StartsWith("Menu"))
+                {
+                    itemstoremove.Add(ui);
+                }
+            }
+            foreach (UIElement ui in itemstoremove)
+            {
+                Banner.Children.Remove(ui);
+            }
+
+
             //Menubutton Links von Songbox öffnet 2 neue Buttons
 
             var top = Canvas.GetTop(sender as Button);
+            var left = Canvas.GetLeft(sender as Button);
             focusedname = (sender as Button).Name;
 
             foreach (Song s in Songs)
@@ -241,20 +286,25 @@ namespace Spotify
                 {
                     Button deletebutton = new Button();
                     deletebutton.Name = (sender as Button).Name + "delete";
-
+                    deletebutton.Content = "Delete Song";
+                    //deletebutton.Click += DeleteSong;
+                    deletebutton.Uid = "Menu";
+                    Canvas.SetLeft(deletebutton, left + 20);
+                    Canvas.SetTop(deletebutton, top + 20);
+                    Banner.Children.Add(deletebutton);
 
                     Button AddtoPlaylistbutton = new Button();
                     AddtoPlaylistbutton.Name = (sender as Button).Name + "Add";
                     AddtoPlaylistbutton.Content = "Add Song to Playlist";
                     AddtoPlaylistbutton.Click += ShowPlaylistsmenu;
-                    Canvas.SetLeft(AddtoPlaylistbutton, 300);
-                    Canvas.SetTop(AddtoPlaylistbutton, 300);
+                    AddtoPlaylistbutton.Uid = "Menu";
+                    Canvas.SetLeft(AddtoPlaylistbutton, left + 20);
+                    Canvas.SetTop(AddtoPlaylistbutton, top);
                     Banner.Children.Add(AddtoPlaylistbutton);
                     s.focus = true;
                 }
             }
         }
-
         public void ShowPlaylistsmenu(object sender, RoutedEventArgs e)
         {
             //AddPlaylist Menu zeigt alle Playlists
@@ -265,9 +315,10 @@ namespace Spotify
                 addtoplay.Name = p.PlaylistName.Replace(" ","");
                 addtoplay.Click += AddToPlaylist_Click;
                 addtoplay.Content = p.PlaylistName;
-                addtoplay.FontSize = 22;
-                Canvas.SetLeft(addtoplay, 320);
-                Canvas.SetTop(addtoplay, 300 + (k * 10));
+                addtoplay.FontSize = 15;
+                addtoplay.Uid = "Menu";
+                Canvas.SetLeft(addtoplay, 410);
+                Canvas.SetTop(addtoplay, 300 + (k * 23));
                 Banner.Children.Add(addtoplay);
                 k++;
             }
@@ -282,9 +333,11 @@ namespace Spotify
             {
                 if ((sender as Button).Content.ToString() == p.PlaylistName)
                 {
-
-                    p.AddSongToPlaylist(Songs.Where(S => S.focus == true).FirstOrDefault());
+                    var song = Songs.FirstOrDefault(r => r.focus == true);
+                    p.AddSongToPlaylist(song);
                     p.SaveSongs();
+
+                    song.focus = false;
                     //mach dass die Buttons wieder verschwinden @nick
                 }
             }
@@ -292,6 +345,97 @@ namespace Spotify
         }
 
         #endregion WPF und Buttons
+        #region controls
+        public void Play_MouseDown(object sender, RoutedEventArgs e)
+        {
+            //Songs abspielen
+
+            playbuttonimage.Visibility = Visibility.Hidden;
+            pausebuttonimage.Visibility = Visibility.Visible;
+
+            mediaElement1.LoadedBehavior = MediaState.Manual;
+            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+
+            mediaElement1.Play();
+
+            mediaElement1.Position += currenttime;
+        }
+
+        public void Play_MouseDown()
+        {
+            //Songs abspielen
+
+            playbuttonimage.Visibility = Visibility.Hidden;
+            pausebuttonimage.Visibility = Visibility.Visible;
+
+            mediaElement1.LoadedBehavior = MediaState.Manual;
+            mediaElement1.Source = new Uri(@"C:\Users\nikol\Music\" + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+
+            mediaElement1.Play();
+
+            mediaElement1.Position += currenttime;
+        }
+
+        public void Pause_MouseDown(object sender, RoutedEventArgs e)
+        {
+
+            playbuttonimage.Visibility = Visibility.Visible;
+            pausebuttonimage.Visibility = Visibility.Hidden;
+
+            mediaElement1.LoadedBehavior = MediaState.Manual;
+            mediaElement1.Pause();
+
+            currenttime = mediaElement1.Position;
+        }
+
+        public void Skip_MouseDown(object sender, RoutedEventArgs e)
+        {
+            Playlist queue = new Playlist();
+
+            if (selectedpath == "Bibliothek")
+            {
+                queue.Playlistsongs = Songs;
+            }
+            else
+            {
+                Playlist selected = playlists.FirstOrDefault(p => p.PlaylistName == selectedpath);
+                queue.Playlistsongs = selected.Playlistsongs;
+            }
+            
+
+            Song playing = queue.Playlistsongs.FirstOrDefault(p => p.Name == currentlyPlaying);
+
+            int idx = queue.Playlistsongs.IndexOf(playing);
+
+            Song next = queue.Playlistsongs[idx + 1];
+            currentlyPlaying = next.Name;
+
+            Play_MouseDown();
+        }
+        public void Back_MouseDown(object sender, RoutedEventArgs e)
+        {
+            Playlist queue = new Playlist();
+
+            if (selectedpath == "Bibliothek")
+            {
+                queue.Playlistsongs = Songs;
+            }
+            else
+            {
+                queue.Playlistsongs = playlists.FirstOrDefault(p => p.PlaylistName == selectedpath).Playlistsongs;
+            }
+
+
+            Song playing = queue.Playlistsongs.FirstOrDefault(p => p.Name == currentlyPlaying);
+
+            int idx = queue.Playlistsongs.IndexOf(playing);
+
+            Song next = queue.Playlistsongs[idx - 1];
+            currentlyPlaying = next.Name;
+
+            Play_MouseDown();
+        }
+        #endregion controls
 
         #region Playlists 
 
@@ -312,7 +456,7 @@ namespace Spotify
             List<UIElement> itemstoremove = new List<UIElement>();
             foreach (UIElement ui in Banner.Children)
             {
-                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist"))
+                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist") || ui.Uid.StartsWith("Menu"))
                 {
                     itemstoremove.Add(ui);
                 }
@@ -356,7 +500,7 @@ namespace Spotify
             List<UIElement> itemstoremove = new List<UIElement>();
             foreach (UIElement ui in Banner.Children)
             {
-                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist"))
+                if (ui.Uid.StartsWith("Song") || ui.Uid.StartsWith("Play") || ui.Uid.StartsWith("Playlist") || ui.Uid.StartsWith("Menu"))
                 {
                     itemstoremove.Add(ui);
                 }
@@ -369,6 +513,7 @@ namespace Spotify
             string playname = (sender as Button).Content.ToString();
 
             Playlist playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();
+            selectedpath = playli.PlaylistName;
 
             //Songs in Playlist anzeigen
 

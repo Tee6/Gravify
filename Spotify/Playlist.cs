@@ -24,6 +24,11 @@ namespace Spotify
             Playlistsongs = songs;
         }
 
+        public Playlist()
+        {
+            Playlistsongs = new List<Song>();
+        }
+
 
 
         public void AddSongToPlaylist(Song s)
@@ -37,6 +42,10 @@ namespace Spotify
         public void SaveSongs()
         {
             string json = JsonSerializer.Serialize(Playlistsongs);
+            File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + PlaylistName + ".json", json);
+        }
+        public void Sev(string json)
+        {
             File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + PlaylistName + ".json", json);
         }
 

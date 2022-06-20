@@ -18,13 +18,12 @@ using System.Windows.Shapes;
 
 namespace Spotify
 {
-    /// <summary>
-    /// Interaktionslogik für CreatePlaylist.xaml
-    /// </summary>
+
     public partial class CreatePlaylist : Window
     {
         internal static List<Playlist> playlists = new List<Playlist>();
         static string jsonpath = @"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json";
+        static string picPath = "";
 
         public CreatePlaylist()
         {
@@ -32,14 +31,12 @@ namespace Spotify
             playlists = LoadSongsFromJson(jsonpath);
 
         }
-        static string picPath = "";
         static List<Playlist> LoadSongsFromJson(string path)
         {
             //Pfad wird gesucht und Objekte aus dem JSON File werden in die Songs Liste übergeben
             string json = File.ReadAllText(path);
             playlists = JsonConvert.DeserializeObject<List<Playlist>>(json);
             return playlists;
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
