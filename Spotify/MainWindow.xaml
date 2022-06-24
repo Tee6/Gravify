@@ -8,21 +8,23 @@
         Title="Spotify" Width="1300" Height="700" ResizeMode="NoResize">
     <Grid>
         <ScrollViewer x:Name="Scrollbar" Grid.Row="1" Height="700">
-            <Canvas x:Name="Banner" Background="#FF343434" Height="1000">
-                <Rectangle x:Name="leftrectangle" Fill="#FF1A1A1A" StrokeThickness="5" Stroke="Black" Height="684" Width="246"/>
-                <Rectangle Fill="#FF1A1A1A" Stroke="Black" StrokeThickness="5" Height="103" Width="1300"/>
-                <Label x:Name="Gravify" Content="Gravify" FontSize="36" Foreground="#FF549159" Margin="34,18,33,564" FontWeight="Bold"/>
-                <Button Content="Bibliothek" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" RenderTransformOrigin="0.53,-0.35" Click="Allsongs_Click" Canvas.Left="76" Canvas.Top="108"/>
-                <Button Content="Playlists" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" Canvas.Left="86" Canvas.Top="146" Click="PlaylistButton_Click"/>
-                <Button x:Name="CreatePlaylist" Content="Playlist erstellen" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="24" Canvas.Left="40" Canvas.Top="184" Click="CreatePlaylist_Click"/>
-                <Ellipse Stroke="Black" Margin="959,18,27,15" StrokeThickness="5"/>
-                <Button x:Name="LoadSongs" Content="Songs Laden" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" RenderTransformOrigin="0.53,-0.35" Click="LoadSongs_Click" Canvas.Left="282" Canvas.Top="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <MediaElement x:Name="mediaElement1" Height="100" Width="134" Canvas.Left="447" Canvas.Top="170" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Image x:Name="playbuttonimage" Source="C:\Users\nikol\OneDrive\Desktop\School\emomullet\plswork.png" MouseDown="Play_MouseDown" Height="80" Width="83" Canvas.Left="1074" Canvas.Top="10"/>
-                <Image x:Name="pausebuttonimage" Source="C:\Users\nikol\OneDrive\Desktop\School\emomullet\plswork.png" MouseDown="Pause_MouseDown" Height="80" Width="83" Canvas.Left="1074" Canvas.Top="10" Visibility="Hidden"/>
-                <Image x:Name="skipbuttonimage" Source="C:\Users\nikol\OneDrive\Desktop\School\emomullet\plswork.png" MouseDown="Skip_MouseDown" Height="80" Width="83" Canvas.Left="1138" Canvas.Top="23" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.003,0.407"/>
-                <Image x:Name="backbuttonimage" Source="C:\Users\nikol\OneDrive\Desktop\School\emomullet\plswork.png" MouseDown="Back_MouseDown" Height="80" Width="83" Canvas.Left="1006" Canvas.Top="10"/>
-            </Canvas>
+            <Canvas x:Name="Banner" Background="#FF343434" Height="1000"/>
+
         </ScrollViewer>
+        <Canvas x:Name="Menuleiste" Height="1000">
+            <Rectangle x:Name="leftrectangle" Fill="#FF1A1A1A" StrokeThickness="5" Stroke="Black" Height="684" Width="246" />
+            <Rectangle Fill="#FF1A1A1A" Stroke="Black" StrokeThickness="5" Height="103" Width="1300"/>
+            <Label x:Name="Gravify" Content="Gravify" FontSize="36" Foreground="#FF549159" Margin="34,18,33,564" FontWeight="Bold"/>
+            <Button Content="Bibliothek" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" RenderTransformOrigin="0.53,-0.35" Click="Allsongs_Click" Canvas.Left="76" Canvas.Top="108"/>
+            <Button Content="Playlists" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" Canvas.Left="86" Canvas.Top="146" Click="PlaylistButton_Click"/>
+            <Button x:Name="CreatePlaylist" Content="Playlist erstellen" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="24" Canvas.Left="40" Canvas.Top="184" Click="CreatePlaylist_Click"/>
+            <Ellipse Stroke="Black" Margin="959,18,27,15" StrokeThickness="5"/>
+            <Button x:Name="LoadSongs" Content="Songs Laden" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="22" RenderTransformOrigin="0.53,-0.35" Click="LoadSongs_Click" Canvas.Left="282" Canvas.Top="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <MediaElement x:Name="mediaElement1" Height="100" Width="134" Canvas.Left="447" Canvas.Top="170" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Image x:Name="playbuttonimage" Source="C:\Users\Nick\Downloads\Gravify-master\Spotify\bin\Debug\playbutton.png" MouseDown="Play_MouseDown" Height="80" Width="83" Canvas.Left="1074" Canvas.Top="10"/>
+            <Image x:Name="pausebuttonimage" Source="C:\Users\Nick\Downloads\Gravify-master\Spotify\bin\Debug\pausebutton.png" MouseDown="Pause_MouseDown" Height="80" Width="83" Canvas.Left="1074" Canvas.Top="10" Visibility="Hidden"/>
+            <Image x:Name="skipbuttonimage" Source="C:\Users\Nick\Downloads\Gravify-master\Spotify\bin\Debug\skipbutton.png" MouseDown="Skip_MouseDown" Height="80" Width="83" Canvas.Left="1141" Canvas.Top="12" />
+            <Image x:Name="backbuttonimage" Source="C:\Users\Nick\Downloads\Gravify-master\Spotify\bin\Debug\skipbutton.png" MouseDown="Back_MouseDown" Height="80" Width="83" Canvas.Left="1006" Canvas.Top="10" RenderTransformOrigin="0.5,0.5"/>
+        </Canvas>
     </Grid>
 </Window>

@@ -17,7 +17,7 @@
         <TextBox x:Name="nameplaylist" TextWrapping="Wrap" Text="Playlist Name" Width="794" Canvas.Left="346" Canvas.Top="356" HorizontalAlignment="Left" VerticalAlignment="Center" Height="36" GotFocus="nameplaylist_Click" FontWeight="Bold" VerticalContentAlignment="Center" Background="#FF343434" Foreground="#FF7C7C7C" BorderThickness="0,0,0,1" FontSize="15"/>
         <TextBox x:Name="descrplaylist" TextWrapping="Wrap" Text="Playlist Description" Width="794" Canvas.Left="346" Canvas.Top="408" HorizontalAlignment="Center" VerticalAlignment="Top" Height="88" GotFocus="descrplaylist_Click" Foreground="#FF7C7C7C" FontWeight="Bold" Background="#FF343434" BorderThickness="0,0,0,1" VerticalContentAlignment="Bottom" Margin="0" Padding="0,0,0,7" FontSize="15"/>
         <Canvas Name ="CanvasPic" Height="185" Width="185" Canvas.Left="1005" Canvas.Top="123" OpacityMask="#54000000" >
-            <Image Name="icon" Source="graving.png" Height="185" Width="185"/>
+            <Image Name="icon" Source="/graving.png" Height="185" Width="185"/>
         </Canvas>
         <Button Content="Add Playlist" Canvas.Left="370" Canvas.Top="524" Height="47" Width="194" BorderBrush="#FF549159" Background="#FF549159" Click="Button_Click"/>
         <Button Content="Import Profilepic" Canvas.Left="1034" Canvas.Top="320" Width="128" Background="#FF549159" BorderBrush="{x:Null}" Height="36" Click="ImportPic_Click"/>

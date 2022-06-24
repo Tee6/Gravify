@@ -22,8 +22,8 @@ namespace Spotify
     public partial class CreatePlaylist : Window
     {
         internal static List<Playlist> playlists = new List<Playlist>();
-        static string jsonpath = @"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\playlists.json";
-        static string picPath = "";
+        static string jsonpath = Paths.datapath + "playlists.json";
+        static string picPath = Paths.datapath + "graving.png";
 
         public CreatePlaylist()
         {
@@ -34,8 +34,17 @@ namespace Spotify
         static List<Playlist> LoadSongsFromJson(string path)
         {
             //Pfad wird gesucht und Objekte aus dem JSON File werden in die Songs Liste übergeben
-            string json = File.ReadAllText(path);
-            playlists = JsonConvert.DeserializeObject<List<Playlist>>(json);
+            string json = "";
+            try
+            {
+                json = File.ReadAllText(path);
+
+                playlists = JsonConvert.DeserializeObject<List<Playlist>>(json);
+            }
+            catch (Exception)
+            {
+
+            }
             return playlists;
         }
 

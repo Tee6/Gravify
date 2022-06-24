@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Spotify
@@ -31,9 +32,7 @@ namespace Spotify
         internal static List<Playlist> playlists = new List<Playlist>();
         internal static string currentlyPlaying;
         internal static TimeSpan currenttime;
-        internal static string selectedpath = "Bibliothek";
-        internal string datapath = @"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\";
-        internal string librarypath = @"C:\Users\nikol\Music\";
+
 
         //internal static bool focus;
         internal static string focusedname;
@@ -42,22 +41,52 @@ namespace Spotify
             //XAML Einbinden
             InitializeComponent();
 
+            BitmapImage playbuttonimage1 = new BitmapImage();
+            playbuttonimage1.BeginInit();
+            playbuttonimage1.UriSource = new Uri(Paths.datapath + "playbutton.png");
+            playbuttonimage1.EndInit();
+
+            BitmapImage pausebutton1 = new BitmapImage();
+            pausebutton1.BeginInit();
+            pausebutton1.UriSource = new Uri(Paths.datapath + "pausebutton.png");
+            pausebutton1.EndInit();
+
+            BitmapImage skipbutton1 = new BitmapImage();
+            skipbutton1.BeginInit();
+            skipbutton1.UriSource = new Uri(Paths.datapath + "skipbutton.png");
+            skipbutton1.EndInit();
+            BitmapImage backbutton1 = new BitmapImage();
+            backbutton1.BeginInit();
+            backbutton1.UriSource = new Uri(Paths.datapath + "backbutton.png");
+            backbutton1.EndInit();
+
+            playbuttonimage.Source = playbuttonimage1;
+            pausebuttonimage.Source = pausebutton1;
+            skipbuttonimage.Source = skipbutton1;
+            backbuttonimage.Source = backbutton1;
+
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
 
             // Loading in Json Files
-            LoadPlaylistFromJson(datapath + "playlists.json");
-            LoadSongsFromJson(datapath + "Songs.json");
+            try
+            {
+                LoadPlaylistFromJson(Paths.datapath + "playlists.json");
+                LoadSongsFromJson(Paths.datapath + "Songs.json");
+            }
+            catch (Exception)
+            {
+            }
 
-            Banner.Height = Songs.Count * 95;
+            Banner.Height = 690;
             leftrectangle.Height = Banner.Height;
             Scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
 
             foreach (Playlist p in playlists)
                 {
-                    if (File.Exists(datapath + p.PlaylistName + ".json"))
+                    if (File.Exists(Paths.datapath + p.PlaylistName + ".json"))
                     {
-                        string json = File.ReadAllText(datapath + p.PlaylistName + ".json");
+                        string json = File.ReadAllText(Paths.datapath + p.PlaylistName + ".json");
                     p.Sev(json);
                     }
                 }
@@ -67,7 +96,14 @@ namespace Spotify
         //Funktionen für Json Files
         public void LoadPlaylistFromJson(string path)
         {
-            playlists = JsonConvert.DeserializeObject<List<Playlist>>(File.ReadAllText(path));
+            try
+            {
+                playlists = JsonConvert.DeserializeObject<List<Playlist>>(File.ReadAllText(path));
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         static void LoadSongsFromJson(string path)
@@ -102,7 +138,7 @@ namespace Spotify
 
                     //Songs Liste wird in JSON gespeichert.
                     string json = JsonSerializer.Serialize(Songs);
-                    File.WriteAllText(datapath + "Songs.json", json);
+                    File.WriteAllText(Paths.datapath + "Songs.json", json);
                     k++;
                 }
             }
@@ -110,9 +146,27 @@ namespace Spotify
 
         private void Allsongs_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                LoadPlaylistFromJson(Paths.datapath + "playlists.json");
+            }
+            catch (Exception)
+            {
+            }
+
             Scrollbar.Visibility = Visibility.Visible;
-            selectedpath = "Bibliothek";
-            Banner.Height = Songs.Count * 95;
+            Paths.selectedpath = "Bibliothek";
+
+            if (Songs.Count > 7)
+            {
+                Banner.Height = Songs.Count * 95;
+            }
+            else
+            {
+                Banner.Height = 690;
+            }
+
+            
             leftrectangle.Height = Banner.Height;
             Scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
@@ -227,6 +281,9 @@ namespace Spotify
             b.Name = songtitle.Replace(" ", "");
             b.Click += Menubutton_Click;
             b.Uid = "Song" + a;
+            b.Foreground = Brushes.White;
+            b.Background = Brushes.Gray;
+            b.BorderBrush = Brushes.Transparent;
             Canvas.SetLeft(b, 1201);
             Canvas.SetTop(b, top+20);
             Banner.Children.Add(b);
@@ -236,6 +293,9 @@ namespace Spotify
             p.Content = "Play";
             p.Name = songtitle.Replace(" ", "_");
             p.Click += PlayButton_Click;
+            p.Foreground = Brushes.White;
+            p.Background = Brushes.Gray;
+            p.BorderBrush = Brushes.Transparent;
             p.Uid = "Songplay" + a;
             Canvas.SetLeft(p, 1101);
             Canvas.SetTop(p, top + 20);
@@ -253,11 +313,10 @@ namespace Spotify
             pausebuttonimage.Visibility = Visibility.Visible;
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(Paths.librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
             mediaElement1.Play();
+            
         }
-
-        
 
         public void Menubutton_Click(object sender, RoutedEventArgs e)
         {
@@ -300,6 +359,10 @@ namespace Spotify
                     AddtoPlaylistbutton.Content = "Add Song to Playlist";
                     AddtoPlaylistbutton.Click += ShowPlaylistsmenu;
                     AddtoPlaylistbutton.Uid = "Menu";
+                    AddtoPlaylistbutton.FontSize = 18;
+                    AddtoPlaylistbutton.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF343434");
+                    AddtoPlaylistbutton.Foreground = Brushes.White;
+                    AddtoPlaylistbutton.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF549159");
                     Canvas.SetLeft(AddtoPlaylistbutton, left + 20);
                     Canvas.SetTop(AddtoPlaylistbutton, top);
                     Banner.Children.Add(AddtoPlaylistbutton);
@@ -311,18 +374,27 @@ namespace Spotify
         {
             //AddPlaylist Menu zeigt alle Playlists
             int k = 0;
-            foreach(Playlist p in playlists)
+            var top = Canvas.GetTop(sender as Button);
+            var left = Canvas.GetLeft(sender as Button);
+
+            foreach (Playlist p in playlists)
             {
+                k++;
                 Button addtoplay = new Button();
                 addtoplay.Name = p.PlaylistName.Replace(" ","");
                 addtoplay.Click += AddToPlaylist_Click;
                 addtoplay.Content = p.PlaylistName;
-                addtoplay.FontSize = 15;
+                addtoplay.FontSize = 13;
                 addtoplay.Uid = "Menu";
-                Canvas.SetLeft(addtoplay, 410);
-                Canvas.SetTop(addtoplay, 300 + (k * 23));
+                addtoplay.Width = 150;
+                addtoplay.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF343434");
+                addtoplay.Foreground = Brushes.White;
+                addtoplay.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF549159");
+                addtoplay.HorizontalContentAlignment = HorizontalAlignment.Left;
+                Canvas.SetLeft(addtoplay, left);
+                Canvas.SetTop(addtoplay, top + 10 + (k * 20));
                 Banner.Children.Add(addtoplay);
-                k++;
+                
             }
         }
 
@@ -346,7 +418,9 @@ namespace Spotify
 
         }
 
+
         #endregion WPF und Buttons
+
         #region controls
         public void Play_MouseDown(object sender, RoutedEventArgs e)
         {
@@ -356,7 +430,7 @@ namespace Spotify
             pausebuttonimage.Visibility = Visibility.Visible;
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(Paths.librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
 
             mediaElement1.Play();
 
@@ -371,7 +445,7 @@ namespace Spotify
             pausebuttonimage.Visibility = Visibility.Visible;
 
             mediaElement1.LoadedBehavior = MediaState.Manual;
-            mediaElement1.Source = new Uri(librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
+            mediaElement1.Source = new Uri(Paths.librarypath + currentlyPlaying + ".mp3", UriKind.RelativeOrAbsolute);
 
             mediaElement1.Play();
 
@@ -394,13 +468,13 @@ namespace Spotify
         {
             Playlist queue = new Playlist();
 
-            if (selectedpath == "Bibliothek")
+            if (Paths.selectedpath == "Bibliothek")
             {
                 queue.Playlistsongs = Songs;
             }
             else
             {
-                Playlist selected = playlists.FirstOrDefault(p => p.PlaylistName == selectedpath);
+                Playlist selected = playlists.FirstOrDefault(p => p.PlaylistName == Paths.selectedpath);
                 queue.Playlistsongs = selected.Playlistsongs;
             }
             
@@ -418,13 +492,13 @@ namespace Spotify
         {
             Playlist queue = new Playlist();
 
-            if (selectedpath == "Bibliothek")
+            if (Paths.selectedpath == "Bibliothek")
             {
                 queue.Playlistsongs = Songs;
             }
             else
             {
-                queue.Playlistsongs = playlists.FirstOrDefault(p => p.PlaylistName == selectedpath).Playlistsongs;
+                queue.Playlistsongs = playlists.FirstOrDefault(p => p.PlaylistName == Paths.selectedpath).Playlistsongs;
             }
 
 
@@ -432,7 +506,12 @@ namespace Spotify
 
             int idx = queue.Playlistsongs.IndexOf(playing);
 
+            if (idx == 0)
+            {
+                idx = queue.Playlistsongs.Count;
+            }
             Song next = queue.Playlistsongs[idx - 1];
+
             currentlyPlaying = next.Name;
 
             Play_MouseDown();
@@ -450,8 +529,17 @@ namespace Spotify
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
+            if (playlists.Count > 10)
+            {
+                Banner.Height = 690 + (playlists.Count - 10) * 200;
+            }
+            else
+            {
+                Banner.Height = 690;
+            }
+
             //Load Playlists
-            LoadPlaylistFromJson(datapath + "playlists.json");
+            LoadPlaylistFromJson(Paths.datapath + "playlists.json");
 
             //Alle Elemente Löschen
 
@@ -471,7 +559,7 @@ namespace Spotify
             //Für jede Playlist ein Button
 
             int i = 0;
-            int top = 150;
+            int top = 290;
             int c = 0;
             foreach (Playlist p in playlists)
             {
@@ -479,21 +567,50 @@ namespace Spotify
                 if (i >= 5)
                 {
                     i = 0;
-                    top += 30;
+                    top += 240;
                 }
-                int left= 300 + (i * 150);
+                int left= 310 + (i * 198);
                 Button b = new Button();
+                b.Width = 100;
+                b.Height = 33; 
                 b.Content = p.PlaylistName;
+                b.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF343434");
+                b.Foreground = Brushes.White;
+                b.FontSize = 20;
+                b.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF549159");
+                b.HorizontalContentAlignment = HorizontalAlignment.Center;
+                b.VerticalContentAlignment = VerticalAlignment.Center;
+
                 b.Name = p.PlaylistName.Replace(" ","");
                 b.Click += ShowPlaylist;
                 b.Uid = "Play" + c;
                 Canvas.SetTop(b,top);
                 Canvas.SetLeft(b, left);
                 Banner.Children.Add(b);
+
+                Playlist playli = playlists.Where(t => t.PlaylistName == p.PlaylistName).FirstOrDefault();
+
+                Image icon = new Image();
+                try
+                {
+
+                    icon.Source = new BitmapImage(new Uri(playli.PicPath));
+                }
+                catch (Exception)
+                {
+                    icon.Source = new BitmapImage(new Uri(Paths.datapath + "graving.png"));
+                }
+                icon.Width = 150;
+                icon.Height = 150;
+                icon.Uid = "Playlist";
+                Canvas.SetLeft(icon, left - 25);
+                Canvas.SetTop(icon, top - 160);
+                Banner.Children.Add(icon);
                 i++;
                 c++;
             }
         }
+
 
         public void ShowPlaylist(object sender, RoutedEventArgs e)
         {
@@ -515,7 +632,35 @@ namespace Spotify
             string playname = (sender as Button).Content.ToString();
 
             Playlist playli = playlists.Where(Playlist => Playlist.PlaylistName == playname).FirstOrDefault();
-            selectedpath = playli.PlaylistName;
+            Paths.selectedpath = playli.PlaylistName;
+
+            if (playli.Playlistsongs.Count > 3)
+            {
+                Banner.Height = 690 + (playli.Playlistsongs.Count - 3) * 50;
+            }
+            else
+            {
+                Banner.Height = 690;
+            }
+            
+            //icon anzeigen
+            Image icon = new Image();
+            try
+            {
+
+                icon.Source = new BitmapImage(new Uri(playli.PicPath));
+            }
+            catch (Exception)
+            {
+                icon.Source = new BitmapImage(new Uri(Paths.datapath + "graving.png"));
+            }
+            icon.Width = 220;
+            icon.Height = 220;
+            icon.Uid = "Playlist";
+            Canvas.SetLeft(icon, 950);
+            Canvas.SetTop(icon, 125);
+            Banner.Children.Add(icon);
+            
 
             //Songs in Playlist anzeigen
 
@@ -532,28 +677,12 @@ namespace Spotify
             //Desc
             Label describtion = new Label();
             describtion.Content = playli.Description;
-            describtion.FontSize = 30;
+            describtion.FontSize = 25;
             describtion.Foreground = Brushes.White;
             describtion.Uid = "Playlist" + b;
             Canvas.SetTop(describtion,300);
             Canvas.SetLeft(describtion, 300);
             Banner.Children.Add(describtion);
-
-            int mult = 2;
-            Image Cover = new Image();
-            try
-            {
-                Cover.Source = new BitmapImage(new Uri(playli.PicPath));
-            }
-            catch (Exception)
-            {
-            }
-            Cover.Width = mult * 185;
-            Cover.Height = mult * 104;
-            Cover.Uid = "Playlist" + b;
-            Canvas.SetTop(Cover, 150);
-            Canvas.SetLeft(Cover, 800);
-            Banner.Children.Add(Cover);
 
 
             int k = 3;
@@ -571,5 +700,6 @@ namespace Spotify
         }
 
         #endregion Playlists
+
     }
 }

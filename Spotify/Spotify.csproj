@@ -101,6 +101,7 @@
     <Compile Include="CreatePlaylist.xaml.cs">
       <DependentUpon>CreatePlaylist.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Paths.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="Song.cs" />
     <Page Include="AddSong.xaml">
@@ -150,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graving.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets')" />

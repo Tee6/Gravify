@@ -1,0 +1,39 @@
+﻿<Window x:Class="Spotify.AddSong"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Spotify"
+        mc:Ignorable="d"
+        Title="Add a Song" Width="1300" Height="700" >
+    <Grid x:Name="Timetextbox" Background="#FF343434" Margin="0,0,-4,-6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="99*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="251*"/>
+            <ColumnDefinition Width="1053*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Margin="0,0,8,0" Fill="#FF1A1A1A" StrokeThickness="5" Stroke="Black" Grid.RowSpan="2"/>
+        <Rectangle Margin="0,0,0,592" Fill="#FF1A1A1A" Stroke="Black" StrokeThickness="5" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Label Content="Gravify" FontSize="36" Foreground="#FF549159" Margin="34,18,33,564" FontWeight="Bold" Grid.RowSpan="2"/>
+        <Ellipse Stroke="Black" Margin="959,18,27,15" StrokeThickness="5" Grid.Column="1"/>
+        <TextBox x:Name="Nametextbox" TextWrapping="Wrap" Text="" Grid.Column="1" Margin="269,49,514,485" Grid.Row="1" Background="#FF545454" FontSize="24" FontWeight="Bold"/>
+        <TextBox x:Name="Artisttextbox" TextWrapping="Wrap" Text="" Grid.Column="1" Margin="269,134,514,400" Grid.Row="1" Background="#FF545454" FontSize="24" FontWeight="Bold"/>
+        <TextBox x:Name="Albumtextbox" TextWrapping="Wrap" Text="" Grid.Column="1" Margin="269,220,514,314" Grid.Row="1" Background="#FF545454" FontSize="24" FontWeight="Bold"/>
+        <TextBox x:Name="Timetextbox1" TextWrapping="Wrap" Text="" Grid.Column="1" Margin="269,309,514,225" Grid.Row="1" Background="#FF545454" FontSize="24" FontWeight="Bold"/>
+        <Button Content="Add Song" Grid.Column="1" Margin="48,410,735,123" Grid.Row="1" FontSize="24" Background="#FF549159" FontWeight="Bold" Click="Button_Click"/>
+        <Label Content="Songname:" Grid.Column="1" Margin="48,49,754,449" Grid.Row="1" FontSize="36" FontWeight="Bold"/>
+        <Label Content="Artist:" Grid.Column="1" Margin="48,134,754,364" Grid.Row="1" FontSize="36" FontWeight="Bold"/>
+        <Label Content="Álbum:" Grid.Column="1" Margin="48,220,754,278" Grid.Row="1" FontSize="36" FontWeight="Bold"/>
+        <Label Content="Time:" Grid.Column="1" Margin="48,309,754,189" Grid.Row="1" FontSize="36" FontWeight="Bold"/>
+        <Label x:Name="Tryagain" Content="Try again. Check if u used the right Format (Time: hours:minutes:seconds)" Grid.Column="1" Margin="48,476,214,22" Grid.Row="1" FontSize="24" Foreground="#FF549159" Visibility="Hidden"/>
+        <Button x:Name="ClearBoxes" Content="Clear Boxes" Grid.Column="1" Margin="362,410,421,123" Grid.Row="1" FontSize="24" Background="#FF3D6641" FontWeight="Bold" Click="ClearBoxes_Click"/>
+        <Button x:Name="Closebutton" Content="Close Window" Grid.Column="1" Margin="675,410,108,123" Grid.Row="1" FontSize="24" Background="#FF3D6641" FontWeight="Bold" Click="Closebutton_Click"/>
+        <Label Content="Add a Song" FontSize="36" Foreground="White" Margin="10,18,786,564" FontWeight="Bold" Grid.RowSpan="2" Grid.Column="1"/>
+
+
+
+    </Grid>
+</Window>

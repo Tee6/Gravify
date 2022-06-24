@@ -15,6 +15,8 @@ namespace Spotify
         public string Description { get; set; }
         public List<Song> Playlistsongs { get; set; }
         public string PicPath { get; set; }
+
+
         public Playlist(string name, string desc, List<Song> songs, string path)
         {
             PlaylistName = name;
@@ -42,16 +44,16 @@ namespace Spotify
         public void SaveSongs()
         {
             string json = JsonSerializer.Serialize(Playlistsongs);
-            File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + PlaylistName + ".json", json);
+            File.WriteAllText(Paths.datapath + PlaylistName + ".json", json);
         }
         public void Sev(string json)
         {
-            File.WriteAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + PlaylistName + ".json", json);
+            File.WriteAllText(Paths.datapath + PlaylistName + ".json", json);
         }
 
         public void LoadSongs()
         {
-            string path = File.ReadAllText(@"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Spotify\bin\Debug\" + PlaylistName + ".json");
+            string path = File.ReadAllText(Paths.datapath + PlaylistName + ".json");
             Playlistsongs = JsonSerializer.Deserialize<List<Song>>(path);
         }
     }
