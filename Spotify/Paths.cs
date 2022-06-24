@@ -9,8 +9,11 @@ namespace Spotify
     public static class Paths
     {
         public static string selectedpath = "Bibliothek";
-        public static string datapath = @"C:\Users\nikol\OneDrive\Desktop\Gravify-master_Mullet_240622\Gravify-master\Spotify\bin\Debug\";
-        public static string librarypath = @"C:\Users\nikol\OneDrive\Desktop\School\emomullet\Spotify\Songfolder\";
+        //Pfad des Projektordners bis zum "Spotify"-Folder hier einsetzen, Bsp: "C:\Users\Nick\Downloads\Gravify-master_123\Gravify-master\Spotify\"
+        public static string projectfolderpath = @"C:\Users\Nick\Downloads\Gravify-master\Spotify\";
+        public static string datapath = projectfolderpath + @"bin\Debug\";
+        //Der Songfolder muss an einem anderen Platz abgespeichert werden, aus einem unbekannten Grund, Bsp: "C:\Users\Nick\Downloads\Songfolder\"
+        public static string librarypath = @"C:\Users\Nick\Downloads\Songfolder\";
 
     }
 }

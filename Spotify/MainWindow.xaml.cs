@@ -274,7 +274,7 @@ namespace Spotify
             Banner.Children.Add(songtime);
 
 
-            //Menu Button für Playlist Add und Song delete
+            //Menu Button für Playlist Add und Song
             Button b = new Button();
             b.FontSize = 22;
             b.Content = "...";
@@ -345,15 +345,6 @@ namespace Spotify
             {
                 if (s.Name.Replace(" ", "") == (sender as Button).Name)
                 {
-                    Button deletebutton = new Button();
-                    deletebutton.Name = (sender as Button).Name + "delete";
-                    deletebutton.Content = "Delete Song";
-                    //deletebutton.Click += DeleteSong;
-                    deletebutton.Uid = "Menu";
-                    Canvas.SetLeft(deletebutton, left + 20);
-                    Canvas.SetTop(deletebutton, top + 20);
-                    Banner.Children.Add(deletebutton);
-
                     Button AddtoPlaylistbutton = new Button();
                     AddtoPlaylistbutton.Name = (sender as Button).Name + "Add";
                     AddtoPlaylistbutton.Content = "Add Song to Playlist";
