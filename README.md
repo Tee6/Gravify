@@ -1,8 +1,21 @@
 # Gravify
-Spotifyfake vom mullet und vom emo
-Spotify - 
-WPF,
+Spotifyfake von Nick und Niko
+Spotify -
+Mit Hilfe von WPF und c# haben wir einen "Spotifyfake" programmiert. Mit "Gravify" kann man mit dem Button "Songs hinzufügen", mp3 Files zur Bibliothek hinzufügen. Wichtig dabei ist dass die Metadaten ausgelesen werden und der Song titel den selben namen wie die Datei haben muss. Im Songfolder sind schon vorgefertigte Songs hinterlegt.
+Beim Starten des Programms müssen noch 3 Variablen geändert werden.
 
+dataPath beschreibt den Ort wo alle jSON Files abgespeichert und aufgerufen werden
+libraryPath beschreibt den Ort wo alle Songs liegen
+im CreatePlaylist.cs muss der Path zum gleichen Pfad geändert werden wie datapath nur mit "\playlists.json" hinten hinzugefügt.
+
+Nach dem Starten und hinzufügen von Songs können diese in der Bibliothek oder vorher erstellten Playlists angehört werden. Mit den Buttons links und rechts vom Play button oben rechts können Lieder übersprungen oder nocheinmal angehört werden.
+
+Bei Playlist erstellen kann man einen Namen, eine Beschreibung und bei Bedarf ein Profilbild für die Playlist einrichten. Danach wird die Playlist beim drücken des "Playlsts" Button angezeigt.
+
+Wenn man in der Bibliothek auf die 3 Punkte klickt und auf Add to Playlist klickt kann man auswählen in welche Playlist das Lied hinzugefügt werden soll.
+Wenn man dann auf die Playlist in der Playlistansicht klickt werden die hinzugefügten songs dargestellt.
+
+Songs werden immer Respektiv zu ihrem Ort abgespielt. Bedeutet wenn man in einer Playlist Lied X abspielt wird danach das Lied abgespielt was in dieser Playlist danach kommt.
 
 Backlog:
 Main screen:
@@ -27,19 +40,18 @@ V1:
 			Die Liste wird mit Buttons dargestellt welche gedrückt werden können
 			um die Songs in der Playlist anzuschauen
 
- Lieder Shufflen,
-			in zufälliger reihenfolge werden songs "abgespielt" also angezeigt
+ (Lieder Shufflen,
+			in zufälliger reihenfolge werden songs "abgespielt" also angezeigt)
+			
+Lieder wirklich abspielen
+			Pfad des angeklickten liedes wird gesucht
+			mp3 wird abgespielt
 
- Einzelne Lieder abspielen (Nur mit Membership),
-			durch anklicken der Songs wird der song als abspielend angezeigt
 
 V2:
  Membership
 			Mit membership können einzelne lieder abgespielt werden
- Lieder wirklich abspielen
-			Pfad des angeklickten liedes wird gesucht
-			mp3 wird abgespielt
-
+ 
  Covers von Liedern
 			Albumcover wenn das lied abgespielt wird
 			(und in der Bibliothek)
@@ -54,15 +66,3 @@ V2:
 
  Künstler Profil
 			Alle lieder eines Künstlers mit Playlists und Alben
-
-
-Spotifyfake wo man Lieder hochladen kann und Playlists erstellen kann. Lieder
-können vielleicht wirklich abgespielt werden.
-
-
-Man startet im Main screen
-Songs laden: MP3 Files mit metadaten können geladen werden
-dises geladenen Dateien können in der Bibliothek angeschaut werden.
-
-mit dem Button "Playlists" können erstellte Playlists angesehen werden
-mit Playlist erstellen wird ein neues Fenster geöffnet welches mit den angegebenen Daten eine Playlist erstellt.
