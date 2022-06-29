@@ -62,6 +62,7 @@ namespace Spotify
             Playlist p = playlists.Where(pl => pl.PlaylistName == name).FirstOrDefault();
             p.SaveSongs();
 
+            Close();
         }
         private void nameplaylist_Click(object sender, EventArgs e)
         {

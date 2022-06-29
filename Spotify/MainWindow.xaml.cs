@@ -40,7 +40,7 @@ namespace Spotify
         {
             //XAML Einbinden
             InitializeComponent();
-
+            #region Images
             BitmapImage playbuttonimage1 = new BitmapImage();
             playbuttonimage1.BeginInit();
             playbuttonimage1.UriSource = new Uri(Paths.datapath + "playbutton.png");
@@ -65,8 +65,9 @@ namespace Spotify
             skipbuttonimage.Source = skipbutton1;
             backbuttonimage.Source = backbutton1;
 
+            #endregion Images
 
-            mediaElement1.LoadedBehavior = MediaState.Manual;
+            
 
             // Loading in Json Files
             try
@@ -78,6 +79,7 @@ namespace Spotify
             {
             }
 
+            mediaElement1.LoadedBehavior = MediaState.Manual;
             Banner.Height = 690;
             leftrectangle.Height = Banner.Height;
             Scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
@@ -193,6 +195,7 @@ namespace Spotify
                 j++;
             }
         }
+
         #endregion Songs
 
         #region WPF und Buttons
@@ -404,11 +407,22 @@ namespace Spotify
 
                     song.focus = false;
                     //mach dass die Buttons wieder verschwinden @nick
+
+                    List<UIElement> itemstoremove = new List<UIElement>();
+                    foreach (UIElement ui in Banner.Children)
+                    {
+                        if (ui.Uid.StartsWith("Menu"))
+                        {
+                            itemstoremove.Add(ui);
+                        }
+                    }
+                    foreach (UIElement ui in itemstoremove)
+                    {
+                        Banner.Children.Remove(ui);
+                    }
                 }
             }
-
         }
-
 
         #endregion WPF und Buttons
 
@@ -479,6 +493,7 @@ namespace Spotify
 
             Play_MouseDown();
         }
+
         public void Back_MouseDown(object sender, RoutedEventArgs e)
         {
             Playlist queue = new Playlist();
