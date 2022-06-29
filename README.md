@@ -1,8 +1,9 @@
 # Gravify
 Spotifyfake von Nick und Niko
 Spotify -
-Mit Hilfe von WPF und c# haben wir einen "Spotifyfake" programmiert. Mit "Gravify" kann man mit dem Button "Songs hinzufügen", mp3 Files zur Bibliothek hinzufügen. Wichtig dabei ist dass die Metadaten ausgelesen werden und der Song titel den selben namen wie die Datei haben muss. Im Songfolder sind schon vorgefertigte Songs hinterlegt.
-Beim Starten des Programms müssen noch 3 Variablen geändert werden.
+Mit Hilfe von WPF und c# haben wir einen "Spotifyfake" programmiert. Mit "Gravify" kann man mit dem Button "Songs hinzufügen", mp3 Files zur Bibliothek hinzufügen. Wichtig dabei ist dass die Metadaten ausgelesen werden und der Song titel den selben namen wie die Datei haben muss. Im Songfolder sind schon vorgefertigte Songs hinterlegt. Am Besten und Fehlerfreiesten funktioniert das Programm wenn die Zip "Songfolder" extrahiert wird und dieser Ordner als librarydata variable hinterlegt wird.
+
+Beim Starten des Programms müssen noch 3 Variablen in der Paths Klasse geändert werden.
 
 dataPath beschreibt den Ort wo alle jSON Files abgespeichert und aufgerufen werden
 libraryPath beschreibt den Ort wo alle Songs liegen
